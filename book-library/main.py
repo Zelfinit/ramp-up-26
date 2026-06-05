@@ -31,11 +31,13 @@ def addBook(book: schemas.CreateBook):
     return newBook
 
 
-@app.put("books/{id}")
-def updateBook(id: int, book: schemas.Book):
+@app.put("/books/{id}")
+def updateBook(id: int, book: schemas.CreateBook):
     if id in books.keys():
-        books[id] = book
-        return book
+        books[id] = schemas.Book(
+            id=id, title=book.title, author=book.author, year=book.year
+        )
+        return books[id]
     else:
         raise HTTPException(404, "Book not found")
 
